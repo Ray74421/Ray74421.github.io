@@ -305,7 +305,6 @@ async function main() {
                 secondEntry.unlockTimestamp -
                 firstEntry.unlockTimestamp
         )
-        .slice(0, maximumEntries)
         .map(
             ({
                 unlockTimestamp,
