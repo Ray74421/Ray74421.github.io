@@ -235,15 +235,12 @@ async function fetchGameAchievements(appId) {
                 };
             });
     } catch (error) {
-        console.warn(
-            `Skipping AppID ${appId}:`,
-            error instanceof Error
-                ? error.message
-                : error
-        );
+    console.error(
+        `Failed to fetch achievements for AppID ${appId}.`
+    );
 
-        return [];
-    }
+    throw error;
+}
 }
 
 /**
