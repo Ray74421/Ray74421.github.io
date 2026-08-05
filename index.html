@@ -833,7 +833,204 @@ html {
         width: auto;
     }
 }
+/* =========================================================
+   Game 二级分类
+========================================================= */
 
+.game-filter-container {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.game-filter-container[hidden] {
+    display: none;
+}
+
+.game-filter-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.game-filter-title {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.game-filter-summary {
+    color: var(--text-light);
+    font-size: 0.82rem;
+}
+
+.game-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-filter-button {
+    min-height: 34px;
+    padding: 5px 12px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.game-filter-button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.game-filter-button[aria-pressed="true"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.game-filter-button:focus-visible {
+    outline: 3px solid rgb(140 47 57 / 20%);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   Timeline 分页
+========================================================= */
+
+.timeline-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 36px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border-color);
+}
+
+.timeline-pagination[hidden] {
+    display: none;
+}
+
+.pagination-page-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.pagination-navigation-button,
+.pagination-page-button {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 5px 10px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    background-color: var(--surface-background);
+    color: var(--text-primary);
+
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.pagination-navigation-button:hover:not(:disabled),
+.pagination-page-button:hover:not([aria-current="page"]) {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.pagination-page-button[aria-current="page"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.pagination-navigation-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.pagination-ellipsis {
+    min-width: 24px;
+    color: var(--text-light);
+    text-align: center;
+}
+
+.timeline-page-summary {
+    margin: 12px 0 0;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+
+/* =========================================================
+   移动端分页
+========================================================= */
+
+@media (max-width: 600px) {
+    .game-filter-header {
+        display: block;
+    }
+
+    .game-filter-summary {
+        display: block;
+        margin-top: 4px;
+    }
+
+    .timeline-pagination {
+        flex-wrap: wrap;
+    }
+
+    .pagination-page-buttons {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .pagination-navigation-button {
+        flex: 1;
+    }
+}
+
+
+
+
+
+
+
+
+
+        
 
 /* =========================================================
    手机和平板窄屏布局
@@ -1106,17 +1303,82 @@ html {
             Trip
         </button>
     </div>
-
-    <div
-        class="timeline-category-panel"
-        id="timeline-category-panel"
-        role="tabpanel"
-        aria-labelledby="timeline-work-tab"
-        aria-live="polite"
-    >
         <!-- JavaScript 会在这里生成当前类别的时间线 -->
-        <div class="timeline" id="timeline-list"></div>
-    </div>
+                    <div
+    class="timeline-category-panel"
+    id="timeline-category-panel"
+    role="tabpanel"
+    aria-labelledby="timeline-work-tab"
+>
+    <!-- 只有选择 Game 时才会显示 -->
+    <section
+        class="game-filter-container"
+        id="game-filter-container"
+        aria-label="Game filters"
+        hidden
+    >
+        <div class="game-filter-header">
+            <span class="game-filter-title">
+                Select a game
+            </span>
+
+            <span
+                class="game-filter-summary"
+                id="game-filter-summary"
+            ></span>
+        </div>
+
+        <div
+            class="game-filter-tabs"
+            id="game-filter-tabs"
+            role="group"
+            aria-label="Filter achievements by game"
+        ></div>
+    </section>
+
+    <!-- 当前页的时间线内容 -->
+    <div
+        class="timeline"
+        id="timeline-list"
+        aria-live="polite"
+    ></div>
+
+    <!-- 分页按钮 -->
+    <nav
+        class="timeline-pagination"
+        id="timeline-pagination"
+        aria-label="Timeline pagination"
+        hidden
+    >
+        <button
+            class="pagination-navigation-button"
+            id="timeline-previous-page"
+            type="button"
+        >
+            Previous
+        </button>
+
+        <div
+            class="pagination-page-buttons"
+            id="timeline-page-buttons"
+        ></div>
+
+        <button
+            class="pagination-navigation-button"
+            id="timeline-next-page"
+            type="button"
+        >
+            Next
+        </button>
+    </nav>
+
+    <p
+        class="timeline-page-summary"
+        id="timeline-page-summary"
+        aria-live="polite"
+    ></p>
+</div>
+        
 </section>
             </section>
 
@@ -1589,29 +1851,695 @@ async function loadSteamAchievements() {
     /**
      * 创建并初始化 Work / Reading / Game / Trip 标签。
      */
-    function initializeTimelineTabs() {
-        const categoryButtons = Array.from(
-            document.querySelectorAll(
-                ".timeline-category-button[data-timeline-category]"
-            )
+    const TIMELINE_PAGE_SIZE = 50;
+const ALL_GAMES_FILTER = "__all_games__";
+
+/**
+ * Initializes the main timeline categories, game filters,
+ * and shared pagination.
+ */
+function initializeTimelineTabs() {
+    const categoryButtons = Array.from(
+        document.querySelectorAll(
+            ".timeline-category-button[data-timeline-category]"
+        )
+    );
+
+    const timelinePanel =
+        document.getElementById("timeline-category-panel");
+
+    const timelineList =
+        document.getElementById("timeline-list");
+
+    const gameFilterContainer =
+        document.getElementById("game-filter-container");
+
+    const gameFilterTabs =
+        document.getElementById("game-filter-tabs");
+
+    const gameFilterSummary =
+        document.getElementById("game-filter-summary");
+
+    const pagination =
+        document.getElementById("timeline-pagination");
+
+    const previousPageButton =
+        document.getElementById("timeline-previous-page");
+
+    const nextPageButton =
+        document.getElementById("timeline-next-page");
+
+    const pageButtonsContainer =
+        document.getElementById("timeline-page-buttons");
+
+    const pageSummary =
+        document.getElementById("timeline-page-summary");
+
+    const requiredElements = [
+        timelinePanel,
+        timelineList,
+        gameFilterContainer,
+        gameFilterTabs,
+        gameFilterSummary,
+        pagination,
+        previousPageButton,
+        nextPageButton,
+        pageButtonsContainer,
+        pageSummary
+    ];
+
+    if (
+        categoryButtons.length === 0 ||
+        requiredElements.some((element) => !element)
+    ) {
+        console.error(
+            "Timeline initialization failed because required elements are missing."
         );
 
-        const timelineList =
-            document.getElementById("timeline-list");
+        return;
+    }
 
-        const timelinePanel =
-            document.getElementById(
-                "timeline-category-panel"
-            );
+    /**
+     * Timeline UI state.
+     */
+    const state = {
+        category: "work",
+        gameFilter: ALL_GAMES_FILTER,
+        page: 1
+    };
+
+    /**
+     * Returns a safe timeline array for a category.
+     *
+     * @param {string} category
+     * @returns {object[]}
+     */
+    function getCategoryEntries(category) {
+        const entries = timelineData[category];
+
+        if (!Array.isArray(entries)) {
+            return [];
+        }
+
+        return entries.filter(
+            (entry) =>
+                entry !== null &&
+                typeof entry === "object"
+        );
+    }
+
+    /**
+     * Returns the game name associated with an achievement.
+     *
+     * Older or manually entered records without gameName
+     * are grouped under "Other".
+     *
+     * @param {object} entry
+     * @returns {string}
+     */
+    function getEntryGameName(entry) {
+        if (
+            typeof entry.gameName === "string" &&
+            entry.gameName.trim()
+        ) {
+            return entry.gameName.trim();
+        }
+
+        return "Other";
+    }
+
+    /**
+     * Returns the entries currently selected by the user.
+     *
+     * @returns {object[]}
+     */
+    function getVisibleEntries() {
+        const entries =
+            getCategoryEntries(state.category);
 
         if (
-            categoryButtons.length === 0 ||
-            !timelineList ||
-            !timelinePanel
+            state.category !== "game" ||
+            state.gameFilter === ALL_GAMES_FILTER
         ) {
+            return entries;
+        }
+
+        return entries.filter(
+            (entry) =>
+                getEntryGameName(entry) ===
+                state.gameFilter
+        );
+    }
+
+    /**
+     * Builds a map from game name to achievement count.
+     *
+     * @returns {Map<string, number>}
+     */
+    function getGameCounts() {
+        const counts = new Map();
+
+        for (const entry of getCategoryEntries("game")) {
+            const gameName =
+                getEntryGameName(entry);
+
+            counts.set(
+                gameName,
+                (counts.get(gameName) ?? 0) + 1
+            );
+        }
+
+        return counts;
+    }
+
+    /**
+     * Creates a game filter button.
+     *
+     * @param {string} label
+     * @param {string} filterValue
+     * @param {number} entryCount
+     * @returns {HTMLButtonElement}
+     */
+    function createGameFilterButton(
+        label,
+        filterValue,
+        entryCount
+    ) {
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+        button.className = "game-filter-button";
+
+        button.setAttribute(
+            "aria-pressed",
+            String(state.gameFilter === filterValue)
+        );
+
+        button.textContent =
+            `${label} (${entryCount})`;
+
+        button.addEventListener("click", () => {
+            if (state.gameFilter === filterValue) {
+                return;
+            }
+
+            state.gameFilter = filterValue;
+            state.page = 1;
+
+            renderGameFilters();
+            renderTimelinePage();
+        });
+
+        return button;
+    }
+
+    /**
+     * Renders the game-specific secondary filters.
+     */
+    function renderGameFilters() {
+        gameFilterTabs.replaceChildren();
+
+        if (state.category !== "game") {
+            gameFilterContainer.hidden = true;
+            gameFilterSummary.textContent = "";
             return;
         }
 
+        gameFilterContainer.hidden = false;
+
+        const gameEntries =
+            getCategoryEntries("game");
+
+        const gameCounts =
+            getGameCounts();
+
+        const gameNames = Array.from(
+            gameCounts.keys()
+        ).sort((firstName, secondName) => {
+            return firstName.localeCompare(
+                secondName,
+                undefined,
+                {
+                    sensitivity: "base",
+                    numeric: true
+                }
+            );
+        });
+
+        /*
+         * If a selected game disappears from the JSON,
+         * return safely to All Games.
+         */
+        if (
+            state.gameFilter !== ALL_GAMES_FILTER &&
+            !gameCounts.has(state.gameFilter)
+        ) {
+            state.gameFilter = ALL_GAMES_FILTER;
+            state.page = 1;
+        }
+
+        gameFilterSummary.textContent =
+            `${gameNames.length} games · ` +
+            `${gameEntries.length} achievements`;
+
+        const fragment =
+            document.createDocumentFragment();
+
+        fragment.append(
+            createGameFilterButton(
+                "All Games",
+                ALL_GAMES_FILTER,
+                gameEntries.length
+            )
+        );
+
+        for (const gameName of gameNames) {
+            fragment.append(
+                createGameFilterButton(
+                    gameName,
+                    gameName,
+                    gameCounts.get(gameName) ?? 0
+                )
+            );
+        }
+
+        gameFilterTabs.append(fragment);
+    }
+
+    /**
+     * Creates a compact page-number sequence.
+     *
+     * Example:
+     * 1 2 3 … 10
+     *
+     * @param {number} totalPages
+     * @param {number} currentPage
+     * @returns {(number|null)[]}
+     */
+    function buildPaginationSequence(
+        totalPages,
+        currentPage
+    ) {
+        if (totalPages <= 7) {
+            return Array.from(
+                { length: totalPages },
+                (_, index) => index + 1
+            );
+        }
+
+        const pageNumbers = new Set([
+            1,
+            totalPages
+        ]);
+
+        for (
+            let page = currentPage - 2;
+            page <= currentPage + 2;
+            page += 1
+        ) {
+            if (page > 1 && page < totalPages) {
+                pageNumbers.add(page);
+            }
+        }
+
+        const sortedPages =
+            Array.from(pageNumbers).sort(
+                (firstPage, secondPage) =>
+                    firstPage - secondPage
+            );
+
+        const sequence = [];
+
+        for (
+            let index = 0;
+            index < sortedPages.length;
+            index += 1
+        ) {
+            const page = sortedPages[index];
+            const previousPage =
+                sortedPages[index - 1];
+
+            if (
+                index > 0 &&
+                page - previousPage > 1
+            ) {
+                sequence.push(null);
+            }
+
+            sequence.push(page);
+        }
+
+        return sequence;
+    }
+
+    /**
+     * Changes the current page and scrolls back to
+     * the beginning of the timeline.
+     *
+     * @param {number} requestedPage
+     */
+    function changePage(requestedPage) {
+        const totalEntries =
+            getVisibleEntries().length;
+
+        const totalPages = Math.max(
+            1,
+            Math.ceil(
+                totalEntries /
+                TIMELINE_PAGE_SIZE
+            )
+        );
+
+        const nextPage = Math.min(
+            Math.max(requestedPage, 1),
+            totalPages
+        );
+
+        if (nextPage === state.page) {
+            return;
+        }
+
+        state.page = nextPage;
+        renderTimelinePage();
+
+        const prefersReducedMotion =
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+
+        timelineList.scrollIntoView({
+            behavior: prefersReducedMotion
+                ? "auto"
+                : "smooth",
+            block: "start"
+        });
+    }
+
+    /**
+     * Renders pagination controls.
+     *
+     * @param {number} totalEntries
+     * @param {number} totalPages
+     * @param {number} firstDisplayedIndex
+     * @param {number} lastDisplayedIndex
+     */
+    function renderPagination(
+        totalEntries,
+        totalPages,
+        firstDisplayedIndex,
+        lastDisplayedIndex
+    ) {
+        pageButtonsContainer.replaceChildren();
+
+        if (totalEntries === 0) {
+            pagination.hidden = true;
+            pageSummary.textContent = "";
+            return;
+        }
+
+        pageSummary.textContent =
+            `Showing ${firstDisplayedIndex}–` +
+            `${lastDisplayedIndex} of ` +
+            `${totalEntries} records`;
+
+        pagination.hidden = totalPages <= 1;
+
+        previousPageButton.disabled =
+            state.page <= 1;
+
+        nextPageButton.disabled =
+            state.page >= totalPages;
+
+        if (totalPages <= 1) {
+            return;
+        }
+
+        const pageSequence =
+            buildPaginationSequence(
+                totalPages,
+                state.page
+            );
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (const pageNumber of pageSequence) {
+            if (pageNumber === null) {
+                const ellipsis =
+                    document.createElement("span");
+
+                ellipsis.className =
+                    "pagination-ellipsis";
+
+                ellipsis.textContent = "…";
+                ellipsis.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                fragment.append(ellipsis);
+                continue;
+            }
+
+            const pageButton =
+                document.createElement("button");
+
+            pageButton.type = "button";
+            pageButton.className =
+                "pagination-page-button";
+
+            pageButton.textContent =
+                String(pageNumber);
+
+            pageButton.setAttribute(
+                "aria-label",
+                `Go to page ${pageNumber}`
+            );
+
+            if (pageNumber === state.page) {
+                pageButton.setAttribute(
+                    "aria-current",
+                    "page"
+                );
+            }
+
+            pageButton.addEventListener(
+                "click",
+                () => {
+                    changePage(pageNumber);
+                }
+            );
+
+            fragment.append(pageButton);
+        }
+
+        pageButtonsContainer.append(fragment);
+    }
+
+    /**
+     * Renders the current category, game filter, and page.
+     */
+    function renderTimelinePage() {
+        const entries =
+            getVisibleEntries();
+
+        const totalEntries =
+            entries.length;
+
+        const totalPages = Math.max(
+            1,
+            Math.ceil(
+                totalEntries /
+                TIMELINE_PAGE_SIZE
+            )
+        );
+
+        /*
+         * Protect against an invalid page after
+         * switching categories or filters.
+         */
+        state.page = Math.min(
+            Math.max(state.page, 1),
+            totalPages
+        );
+
+        const startIndex =
+            (state.page - 1) *
+            TIMELINE_PAGE_SIZE;
+
+        const endIndex = Math.min(
+            startIndex + TIMELINE_PAGE_SIZE,
+            totalEntries
+        );
+
+        const pageEntries =
+            entries.slice(
+                startIndex,
+                endIndex
+            );
+
+        timelineList.replaceChildren();
+
+        if (pageEntries.length === 0) {
+            const emptyMessage =
+                document.createElement("p");
+
+            emptyMessage.className =
+                "timeline-empty";
+
+            emptyMessage.textContent =
+                "No entries have been added yet.";
+
+            timelineList.append(emptyMessage);
+
+            renderPagination(
+                0,
+                1,
+                0,
+                0
+            );
+
+            return;
+        }
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (const entry of pageEntries) {
+            fragment.append(
+                createTimelineItem(entry)
+            );
+        }
+
+        timelineList.append(fragment);
+
+        renderPagination(
+            totalEntries,
+            totalPages,
+            startIndex + 1,
+            endIndex
+        );
+    }
+
+    /**
+     * Activates one of the four main timeline categories.
+     *
+     * @param {HTMLButtonElement} selectedButton
+     */
+    function activateTimelineCategory(
+        selectedButton
+    ) {
+        const category =
+            selectedButton.dataset
+                .timelineCategory;
+
+        if (!category) {
+            return;
+        }
+
+        state.category = category;
+        state.page = 1;
+
+        for (const button of categoryButtons) {
+            const isSelected =
+                button === selectedButton;
+
+            button.setAttribute(
+                "aria-selected",
+                String(isSelected)
+            );
+
+            button.tabIndex =
+                isSelected ? 0 : -1;
+        }
+
+        timelinePanel.setAttribute(
+            "aria-labelledby",
+            selectedButton.id
+        );
+
+        renderGameFilters();
+        renderTimelinePage();
+    }
+
+    for (const button of categoryButtons) {
+        button.addEventListener("click", () => {
+            activateTimelineCategory(button);
+        });
+
+        button.addEventListener(
+            "keydown",
+            (event) => {
+                const currentIndex =
+                    categoryButtons.indexOf(button);
+
+                let nextIndex = currentIndex;
+
+                if (event.key === "ArrowRight") {
+                    nextIndex =
+                        (currentIndex + 1) %
+                        categoryButtons.length;
+                } else if (
+                    event.key === "ArrowLeft"
+                ) {
+                    nextIndex =
+                        (
+                            currentIndex -
+                            1 +
+                            categoryButtons.length
+                        ) %
+                        categoryButtons.length;
+                } else if (event.key === "Home") {
+                    nextIndex = 0;
+                } else if (event.key === "End") {
+                    nextIndex =
+                        categoryButtons.length - 1;
+                } else {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const nextButton =
+                    categoryButtons[nextIndex];
+
+                nextButton.focus();
+
+                activateTimelineCategory(
+                    nextButton
+                );
+            }
+        );
+    }
+
+    previousPageButton.addEventListener(
+        "click",
+        () => {
+            changePage(state.page - 1);
+        }
+    );
+
+    nextPageButton.addEventListener(
+        "click",
+        () => {
+            changePage(state.page + 1);
+        }
+    );
+
+    const initiallySelectedButton =
+        categoryButtons.find((button) => {
+            return (
+                button.getAttribute(
+                    "aria-selected"
+                ) === "true"
+            );
+        }) ?? categoryButtons[0];
+
+    activateTimelineCategory(
+        initiallySelectedButton
+    );
+}
         /**
          * 渲染某一类别的时间线。
          *
