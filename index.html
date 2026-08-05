@@ -1754,12 +1754,15 @@ async function loadSteamAchievements() {
     }
 
     document.addEventListener(
-        "DOMContentLoaded",
-        () => {
-            initializePrimaryTabs();
-            initializeTimelineTabs();
-        }
-    );
+    "DOMContentLoaded",
+    async () => {
+        initializePrimaryTabs();
+
+        await loadSteamAchievements();
+
+        initializeTimelineTabs();
+    }
+);
 </script>
 </body>
 </html>
