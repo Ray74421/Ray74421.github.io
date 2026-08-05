@@ -1322,6 +1322,55 @@ html {
         ]
     };
 
+/**
+ * Loads generated Steam achievements into the Game timeline.
+ *
+ * @returns {Promise<void>}
+ */
+async function loadSteamAchievements() {
+    try {
+        const response = await fetch(
+            "./data/steam-achievements.json",
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Achievement data returned ${response.status}.`
+            );
+        }
+
+        const achievementData =
+            await response.json();
+
+        if (!Array.isArray(achievementData.entries)) {
+            throw new TypeError(
+                "Achievement data does not contain an entries array."
+            );
+        }
+
+        timelineData.game =
+            achievementData.entries;
+    } catch (error) {
+        console.warn(
+            "Could not load Steam achievements:",
+            error
+        );
+
+        timelineData.game = [
+            {
+                date: "Steam",
+                title: "Achievements unavailable",
+                description:
+                    "Steam achievement data could not be loaded."
+            }
+        ];
+    }
+}
+
+        
     /**
      * 创建并初始化页面顶部的 About / Publications 标签。
      */
