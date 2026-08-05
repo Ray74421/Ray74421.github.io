@@ -1,0 +1,49 @@
+name: Update Steam achievements
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # 每天 UTC 03:17 更新一次。
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-achievements:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch Steam achievements
+        env:
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          STEAM_ID: ${{ vars.STEAM_ID }}
+          STEAM_APP_IDS: ${{ vars.STEAM_APP_IDS }}
+          DISPLAY_TIME_ZONE: Asia/Shanghai
+          MAX_ACHIEVEMENTS: "100"
+        run: node scripts/update-steam-achievements.mjs
+
+      - name: Commit updated achievement data
+        shell: bash
+        run: |
+          if git diff --quiet -- data/steam-achievements.json; then
+            echo "Steam achievement data has not changed."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/steam-achievements.json
+          git commit -m "Update Steam achievement timeline"
+          git push
