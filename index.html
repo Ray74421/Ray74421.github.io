@@ -1776,77 +1776,89 @@ async function loadSteamAchievements() {
         }
     }
 
-    /**
-     * 创建一个时间线条目。
-     *
-     * 使用 textContent 而不是 innerHTML，
-     * 避免文本内容被意外解释为 HTML。
-     *
-     * @param {{
-     *   date: string,
-     *   title: string,
-     *   description: string,
-     *   url?: string,
-     *   linkText?: string
-     * }} entry
-     *
-     * @returns {HTMLElement}
-     */
-    function createTimelineItem(entry) {
-        const article =
-            document.createElement("article");
+   /**
+ * Creates one timeline entry element.
+ *
+ * @param {{
+ *   date?: string,
+ *   title?: string,
+ *   description?: string,
+ *   url?: string,
+ *   linkText?: string
+ * }} entry
+ * @returns {HTMLElement}
+ */
+function createTimelineItem(entry) {
+    const article =
+        document.createElement("article");
 
-        article.className = "timeline-item";
+    article.className = "timeline-item";
 
-        const date =
-            document.createElement("time");
+    const date =
+        document.createElement("time");
 
-        date.className = "timeline-date";
-        date.textContent = entry.date;
+    date.className = "timeline-date";
+    date.textContent =
+        entry.date ?? "Date unavailable";
 
-        const title =
-            document.createElement("h3");
+    const title =
+        document.createElement("h3");
 
-        title.className = "timeline-title";
-        title.textContent = entry.title;
+    title.className = "timeline-title";
+    title.textContent =
+        entry.title ?? "Untitled entry";
 
-        const description =
-            document.createElement("p");
+    const description =
+        document.createElement("p");
 
-        description.className =
-            "timeline-description";
+    description.className =
+        "timeline-description";
 
-        description.textContent =
-            entry.description;
+    description.textContent =
+        entry.description ?? "";
 
-        article.append(
-            date,
-            title,
-            description
-        );
+    article.append(
+        date,
+        title,
+        description
+    );
 
-        if (
-            entry.url &&
-            isSafeWebUrl(entry.url)
-        ) {
-            const link =
-                document.createElement("a");
+    if (
+        typeof entry.url === "string" &&
+        entry.url.trim()
+    ) {
+        try {
+            const parsedUrl = new URL(entry.url);
 
-            link.className =
-                "timeline-item-link";
+            if (
+                parsedUrl.protocol === "http:" ||
+                parsedUrl.protocol === "https:"
+            ) {
+                const link =
+                    document.createElement("a");
 
-            link.href = entry.url;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
+                link.className =
+                    "timeline-item-link";
 
-            link.textContent =
-                entry.linkText ?? "Learn more";
+                link.href = parsedUrl.href;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
 
-            article.append(link);
+                link.textContent =
+                    entry.linkText ?? "Learn more";
+
+                article.append(link);
+            }
+        } catch {
+            console.warn(
+                "Ignoring invalid timeline URL:",
+                entry.url
+            );
         }
-
-        return article;
     }
+
+    return article;
+}
 
     /**
      * 创建并初始化 Work / Reading / Game / Trip 标签。
