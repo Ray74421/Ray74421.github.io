@@ -73,7 +73,7 @@
         <!-- 右侧主要内容 -->
         <main class="main-content">
 
-            <!-- 两个栏目 -->
+            <!-- 三个栏目 -->
             <nav
                 class="tab-navigation"
                 aria-label="主要栏目"
@@ -90,7 +90,18 @@
                 >
                     About
                 </button>
-
+                <button
+        class="tab-button"
+        id="timeline-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="timeline-panel"
+        data-tab-target="timeline-panel"
+        tabindex="-1"
+    >
+        Timeline
+                    </button>
                 <button
                     class="tab-button"
                     id="publications-tab"
@@ -138,7 +149,20 @@
                     </ul>
                 </section>
 
-                <section class="content-section" id="timeline-section">
+
+
+
+
+                <!-- Timeline 栏目 -->
+<section
+    class="tab-panel"
+    id="timeline-panel"
+    role="tabpanel"
+    aria-labelledby="timeline-tab"
+    tabindex="0"
+    hidden
+>
+     <section class="content-section" id="timeline-section">
     <div class="timeline-heading">
         <h2 class="section-title">Timeline</h2>
 
@@ -281,6 +305,42 @@
         
 </section>
             </section>
+    <section
+        class="content-section"
+        id="timeline-section"
+    >
+        <div class="timeline-heading">
+            <h2 class="section-title">
+                Timeline
+            </h2>
+
+            <p class="timeline-instruction">
+                Select a category to explore.
+            </p>
+        </div>
+
+        <div
+            class="timeline-category-tabs"
+            role="tablist"
+            aria-label="Timeline categories"
+        >
+            <!-- Work / Reading / Game / Trip 按钮 -->
+        </div>
+
+        <div
+            class="timeline-category-panel"
+            id="timeline-category-panel"
+            role="tabpanel"
+            aria-labelledby="timeline-work-tab"
+        >
+            <!-- Game filters -->
+
+            <!-- Timeline list -->
+
+            <!-- Pagination -->
+        </div>
+    </section>
+</section>
 
             <!-- Publications 栏目 -->
             <section
