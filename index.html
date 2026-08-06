@@ -688,40 +688,422 @@ async function loadSteamAchievements() {
  * }} entry
  * @returns {HTMLElement}
  */
-function createTimelineItem(entry) {
-    const article =
-        document.createElement("article");
 
+/*
+ * Add these helpers before initializeTimelineTabs().
+ * Replace the old createTimelineItem() with the version in this file.
+ */
+
+let tripGallerySequence = 0;
+
+const lightboxState = {
+    elements: null,
+    images: [],
+    index: 0,
+    trigger: null
+};
+
+/**
+ * Resolves a local or remote image URL and rejects unsafe protocols.
+ *
+ * @param {unknown} value
+ * @returns {string|null}
+ */
+function resolveSafeImageSource(value) {
+    if (typeof value !== "string" || !value.trim()) {
+        return null;
+    }
+
+    try {
+        const parsedUrl = new URL(
+            value.trim(),
+            window.location.href
+        );
+
+        if (
+            parsedUrl.protocol !== "http:" &&
+            parsedUrl.protocol !== "https:"
+        ) {
+            return null;
+        }
+
+        return parsedUrl.href;
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * Converts a trip entry's image data to a validated list.
+ * An image may be a string or an object with src, alt, and caption.
+ *
+ * @param {object} entry
+ * @returns {{src: string, alt: string, caption: string}[]}
+ */
+function normalizeTripImages(entry) {
+    if (!Array.isArray(entry.images)) {
+        return [];
+    }
+
+    return entry.images.flatMap((image, index) => {
+        const sourceValue =
+            typeof image === "string"
+                ? image
+                : image?.src;
+
+        const source =
+            resolveSafeImageSource(sourceValue);
+
+        if (!source) {
+            console.warn(
+                "Ignoring unsafe or invalid trip image:",
+                sourceValue
+            );
+
+            return [];
+        }
+
+        const fallbackAlt =
+            `${entry.title ?? "Trip"} photo ${index + 1}`;
+
+        const alt =
+            typeof image === "object" &&
+            typeof image.alt === "string" &&
+            image.alt.trim()
+                ? image.alt.trim()
+                : fallbackAlt;
+
+        const caption =
+            typeof image === "object" &&
+            typeof image.caption === "string"
+                ? image.caption.trim()
+                : "";
+
+        return [{
+            src: source,
+            alt,
+            caption
+        }];
+    });
+}
+
+/**
+ * Creates the single reusable lightbox element.
+ *
+ * @returns {object}
+ */
+function getImageLightboxElements() {
+    if (lightboxState.elements) {
+        return lightboxState.elements;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "image-lightbox";
+    overlay.hidden = true;
+    overlay.tabIndex = -1;
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute(
+        "aria-label",
+        "Expanded trip image"
+    );
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "image-lightbox-close";
+    closeButton.setAttribute("aria-label", "Close image viewer");
+    closeButton.textContent = "×";
+
+    const counter = document.createElement("span");
+    counter.className = "image-lightbox-counter";
+
+    const previousButton = document.createElement("button");
+    previousButton.type = "button";
+    previousButton.className =
+        "image-lightbox-navigation image-lightbox-previous";
+    previousButton.setAttribute("aria-label", "Previous image");
+    previousButton.textContent = "‹";
+
+    const figure = document.createElement("figure");
+    figure.className = "image-lightbox-figure";
+
+    const image = document.createElement("img");
+    image.className = "image-lightbox-image";
+
+    const caption = document.createElement("figcaption");
+    caption.className = "image-lightbox-caption";
+
+    figure.append(image, caption);
+
+    const nextButton = document.createElement("button");
+    nextButton.type = "button";
+    nextButton.className =
+        "image-lightbox-navigation image-lightbox-next";
+    nextButton.setAttribute("aria-label", "Next image");
+    nextButton.textContent = "›";
+
+    overlay.append(
+        closeButton,
+        counter,
+        previousButton,
+        figure,
+        nextButton
+    );
+
+    document.body.append(overlay);
+
+    function closeLightbox() {
+        overlay.hidden = true;
+        document.body.classList.remove("lightbox-open");
+
+        if (lightboxState.trigger instanceof HTMLElement) {
+            lightboxState.trigger.focus();
+        }
+
+        lightboxState.images = [];
+        lightboxState.index = 0;
+        lightboxState.trigger = null;
+    }
+
+    function renderCurrentImage() {
+        const currentImage =
+            lightboxState.images[lightboxState.index];
+
+        if (!currentImage) {
+            closeLightbox();
+            return;
+        }
+
+        image.src = currentImage.src;
+        image.alt = currentImage.alt;
+
+        caption.textContent =
+            currentImage.caption || currentImage.alt;
+
+        counter.textContent =
+            `${lightboxState.index + 1} / ` +
+            `${lightboxState.images.length}`;
+
+        const hasMultipleImages =
+            lightboxState.images.length > 1;
+
+        previousButton.disabled = !hasMultipleImages;
+        nextButton.disabled = !hasMultipleImages;
+    }
+
+    function moveImage(offset) {
+        const totalImages =
+            lightboxState.images.length;
+
+        if (totalImages <= 1) {
+            return;
+        }
+
+        lightboxState.index =
+            (
+                lightboxState.index +
+                offset +
+                totalImages
+            ) % totalImages;
+
+        renderCurrentImage();
+    }
+
+    closeButton.addEventListener(
+        "click",
+        closeLightbox
+    );
+
+    previousButton.addEventListener(
+        "click",
+        () => moveImage(-1)
+    );
+
+    nextButton.addEventListener(
+        "click",
+        () => moveImage(1)
+    );
+
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (overlay.hidden) {
+            return;
+        }
+
+        if (event.key === "Escape") {
+            closeLightbox();
+        } else if (event.key === "ArrowLeft") {
+            moveImage(-1);
+        } else if (event.key === "ArrowRight") {
+            moveImage(1);
+        }
+    });
+
+    lightboxState.elements = {
+        overlay,
+        closeButton,
+        renderCurrentImage
+    };
+
+    return lightboxState.elements;
+}
+
+/**
+ * Opens the lightbox at a selected image.
+ *
+ * @param {{src: string, alt: string, caption: string}[]} images
+ * @param {number} selectedIndex
+ * @param {HTMLElement} trigger
+ */
+function openImageLightbox(
+    images,
+    selectedIndex,
+    trigger
+) {
+    if (!Array.isArray(images) || images.length === 0) {
+        return;
+    }
+
+    const elements = getImageLightboxElements();
+
+    lightboxState.images = images;
+    lightboxState.index = Math.min(
+        Math.max(selectedIndex, 0),
+        images.length - 1
+    );
+    lightboxState.trigger = trigger;
+
+    elements.renderCurrentImage();
+    elements.overlay.hidden = false;
+    document.body.classList.add("lightbox-open");
+    elements.closeButton.focus();
+}
+
+/**
+ * Creates a collapsed/expandable horizontal gallery for one trip.
+ * The first image is visible before expansion.
+ *
+ * @param {object} entry
+ * @returns {HTMLElement|null}
+ */
+function createTripGallery(entry) {
+    const images = normalizeTripImages(entry);
+
+    if (images.length === 0) {
+        return null;
+    }
+
+    tripGallerySequence += 1;
+
+    const gallery = document.createElement("section");
+    gallery.className = "trip-gallery";
+    gallery.setAttribute(
+        "aria-label",
+        `${entry.title ?? "Trip"} photo gallery`
+    );
+
+    const track = document.createElement("div");
+    track.className = "trip-gallery-track";
+    track.id = `trip-gallery-track-${tripGallerySequence}`;
+
+    const fragment = document.createDocumentFragment();
+
+    images.forEach((tripImage, index) => {
+        const imageButton = document.createElement("button");
+        imageButton.type = "button";
+        imageButton.className = "trip-gallery-image-button";
+        imageButton.setAttribute(
+            "aria-label",
+            `View ${tripImage.alt} at full size`
+        );
+
+        const image = document.createElement("img");
+        image.className = "trip-gallery-image";
+        image.src = tripImage.src;
+        image.alt = tripImage.alt;
+        image.loading = "lazy";
+        image.decoding = "async";
+
+        imageButton.append(image);
+
+        imageButton.addEventListener("click", () => {
+            openImageLightbox(
+                images,
+                index,
+                imageButton
+            );
+        });
+
+        fragment.append(imageButton);
+    });
+
+    track.append(fragment);
+    gallery.append(track);
+
+    if (images.length > 1) {
+        const toggleButton = document.createElement("button");
+        toggleButton.type = "button";
+        toggleButton.className = "trip-gallery-toggle";
+        toggleButton.textContent = "expand";
+        toggleButton.setAttribute("aria-expanded", "false");
+        toggleButton.setAttribute("aria-controls", track.id);
+
+        toggleButton.addEventListener("click", () => {
+            const isExpanded =
+                gallery.classList.toggle("is-expanded");
+
+            toggleButton.setAttribute(
+                "aria-expanded",
+                String(isExpanded)
+            );
+
+            toggleButton.textContent =
+                isExpanded ? "collapse" : "expand";
+
+            if (!isExpanded) {
+                track.scrollLeft = 0;
+            }
+        });
+
+        gallery.append(toggleButton);
+    }
+
+    return gallery;
+}
+
+/**
+ * Creates one timeline entry element.
+ *
+ * Supported fields:
+ * - date, title, description
+ * - url, linkText
+ * - images: [{ src, alt, caption }]
+ *
+ * @param {object} entry
+ * @returns {HTMLElement}
+ */
+function createTimelineItem(entry) {
+    const article = document.createElement("article");
     article.className = "timeline-item";
 
-    const date =
-        document.createElement("time");
-
+    const date = document.createElement("time");
     date.className = "timeline-date";
-    date.textContent =
-        entry.date ?? "Date unavailable";
+    date.textContent = entry.date ?? "Date unavailable";
 
-    const title =
-        document.createElement("h3");
-
+    const title = document.createElement("h3");
     title.className = "timeline-title";
-    title.textContent =
-        entry.title ?? "Untitled entry";
+    title.textContent = entry.title ?? "Untitled entry";
 
-    const description =
-        document.createElement("p");
+    const description = document.createElement("p");
+    description.className = "timeline-description";
+    description.textContent = entry.description ?? "";
 
-    description.className =
-        "timeline-description";
-
-    description.textContent =
-        entry.description ?? "";
-
-    article.append(
-        date,
-        title,
-        description
-    );
+    article.append(date, title, description);
 
     if (
         typeof entry.url === "string" &&
@@ -734,18 +1116,12 @@ function createTimelineItem(entry) {
                 parsedUrl.protocol === "http:" ||
                 parsedUrl.protocol === "https:"
             ) {
-                const link =
-                    document.createElement("a");
-
-                link.className =
-                    "timeline-item-link";
-
+                const link = document.createElement("a");
+                link.className = "timeline-item-link";
                 link.href = parsedUrl.href;
                 link.target = "_blank";
                 link.rel = "noopener noreferrer";
-
-                link.textContent =
-                    entry.linkText ?? "Learn more";
+                link.textContent = entry.linkText ?? "Learn more";
 
                 article.append(link);
             }
@@ -757,12 +1133,21 @@ function createTimelineItem(entry) {
         }
     }
 
+    const tripGallery = createTripGallery(entry);
+
+    if (tripGallery) {
+        article.append(tripGallery);
+    }
+
     return article;
 }
-console.log(
-    "createTimelineItem loaded:",
-    typeof createTimelineItem
-);
+
+
+
+
+
+
+        
     /**
      * 创建并初始化 Work / Reading / Game / Trip 标签。
      */
