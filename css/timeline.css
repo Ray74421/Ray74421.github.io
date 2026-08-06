@@ -1,0 +1,410 @@
+/* =========================================================
+   Timeline structure and entries
+========================================================= */
+
+.timeline {
+    position: relative;
+    display: grid;
+    gap: 16px;
+
+    margin-top: 26px;
+    padding-left: 32px;
+}
+
+.timeline::before {
+    content: "";
+
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 7px;
+
+    width: 1px;
+    background: var(--timeline-color);
+}
+
+.timeline-item {
+    position: relative;
+
+    margin: 0;
+    padding: 18px 20px;
+
+    border: 1px solid transparent;
+    border-radius: 12px;
+
+    background-color: transparent;
+
+    transition:
+        transform 180ms ease,
+        background-color 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 18px;
+}
+
+.timeline-item::before {
+    content: "";
+
+    position: absolute;
+    top: 24px;
+    left: -31px;
+
+    width: 13px;
+    height: 13px;
+
+    border: 3px solid var(--page-background);
+    border-radius: 50%;
+
+    background: var(--accent-color);
+    box-shadow:
+        0 0 0 1px var(--accent-color);
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.timeline-date {
+    display: block;
+    margin-bottom: 4px;
+
+    color: var(--accent-color);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.timeline-title {
+    margin-bottom: 4px;
+    font-size: 1.04rem;
+}
+
+.timeline-description {
+    margin-bottom: 0;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+}
+
+.timeline-item-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.timeline-empty {
+    margin: 0;
+    padding: 28px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+@media (hover: hover) {
+    .timeline-item:hover,
+    .timeline-item:focus-within {
+        transform: translateY(-4px);
+
+        border-color: var(--border-color);
+        background-color: var(--surface-background);
+
+        box-shadow:
+            0 14px 32px rgb(0 0 0 / 10%);
+    }
+
+    .timeline-item:hover::before,
+    .timeline-item:focus-within::before {
+        transform: scale(1.15);
+
+        box-shadow:
+            0 0 0 1px var(--accent-color),
+            0 0 0 6px rgb(140 47 57 / 12%);
+    }
+}
+
+/* =========================================================
+   Timeline category tabs
+========================================================= */
+
+.timeline-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.timeline-heading .section-title {
+    margin-bottom: 0;
+}
+
+.timeline-instruction {
+    margin-bottom: 0;
+    color: var(--text-light);
+    font-size: 0.86rem;
+}
+
+.timeline-category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.timeline-category-button {
+    min-height: 38px;
+    padding: 7px 16px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.timeline-category-button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.timeline-category-button[aria-selected="true"] {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+.timeline-category-button:focus-visible {
+    outline: 3px solid rgb(140 47 57 / 20%);
+    outline-offset: 3px;
+}
+
+.timeline-category-panel {
+    min-height: 160px;
+}
+
+/* =========================================================
+   Game filters
+========================================================= */
+
+.game-filter-container {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.game-filter-container[hidden] {
+    display: none;
+}
+
+.game-filter-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.game-filter-title {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.game-filter-summary {
+    color: var(--text-light);
+    font-size: 0.82rem;
+}
+
+.game-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-filter-button {
+    min-height: 34px;
+    padding: 5px 12px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.game-filter-button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.game-filter-button[aria-pressed="true"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.game-filter-button:focus-visible {
+    outline: 3px solid rgb(140 47 57 / 20%);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   Timeline pagination
+========================================================= */
+
+.timeline-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 36px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border-color);
+}
+
+.timeline-pagination[hidden] {
+    display: none;
+}
+
+.pagination-page-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.pagination-navigation-button,
+.pagination-page-button {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 5px 10px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    background-color: var(--surface-background);
+    color: var(--text-primary);
+
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.pagination-navigation-button:hover:not(:disabled),
+.pagination-page-button:hover:not([aria-current="page"]) {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.pagination-page-button[aria-current="page"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.pagination-navigation-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.pagination-ellipsis {
+    min-width: 24px;
+    color: var(--text-light);
+    text-align: center;
+}
+
+.timeline-page-summary {
+    margin: 12px 0 0;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .game-filter-header {
+        display: block;
+    }
+
+    .game-filter-summary {
+        display: block;
+        margin-top: 4px;
+    }
+
+    .timeline-pagination {
+        flex-wrap: wrap;
+    }
+
+    .pagination-page-buttons {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .pagination-navigation-button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 520px) {
+    .timeline-heading {
+        display: block;
+    }
+
+    .timeline-instruction {
+        margin-top: 8px;
+    }
+
+    .timeline-category-tabs {
+        gap: 8px;
+    }
+
+    .timeline-category-button {
+        padding: 6px 13px;
+    }
+
+    .timeline-item {
+        padding: 16px;
+    }
+
+    .timeline-item:last-child {
+        padding-bottom: 16px;
+    }
+
+    .timeline-item::before {
+        top: 22px;
+    }
+}

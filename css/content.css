@@ -1,0 +1,52 @@
+/* =========================================================
+   Shared page content and footer
+========================================================= */
+
+.content-section {
+    margin-bottom: 48px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.introduction {
+    max-width: 720px;
+    font-size: 1.03rem;
+}
+
+.research-list {
+    display: grid;
+    gap: 10px;
+
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Separators between About Me, Research Interests, and Timeline. */
+#about-panel > .content-section + .content-section {
+    padding-top: 38px;
+    border-top: 2px solid var(--divider-strong);
+}
+
+.site-footer {
+    margin-top: 64px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border-color);
+
+    color: var(--text-light);
+    font-size: 0.84rem;
+}
+
+@media (max-width: 520px) {
+    #about-panel > .content-section + .content-section {
+        padding-top: 30px;
+    }
+}

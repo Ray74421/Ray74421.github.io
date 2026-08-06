@@ -1,0 +1,96 @@
+/* =========================================================
+   Publications
+========================================================= */
+
+.publication-group {
+    margin-bottom: 42px;
+}
+
+.publication-group-title {
+    margin-bottom: 18px;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.publication-list {
+    display: grid;
+    gap: 18px;
+}
+
+.publication-card {
+    padding: 22px 24px;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+
+    background: var(--surface-background);
+    box-shadow: var(--shadow-soft);
+}
+
+.publication-title {
+    margin-bottom: 8px;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: 1.16rem;
+    font-weight: 600;
+}
+
+.publication-authors {
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.publication-authors strong {
+    color: var(--text-primary);
+}
+
+.publication-venue {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.publication-description {
+    margin-bottom: 14px;
+    font-size: 0.94rem;
+}
+
+.publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.publication-link {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 30px;
+    padding: 3px 10px;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.publication-link:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+@media (max-width: 520px) {
+    .publication-card {
+        padding: 18px;
+    }
+}

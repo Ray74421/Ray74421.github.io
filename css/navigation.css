@@ -1,0 +1,70 @@
+/* =========================================================
+   Primary About / Publications navigation
+========================================================= */
+
+.tab-navigation {
+    display: flex;
+    gap: 8px;
+
+    margin-bottom: 30px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid var(--border-color);
+    font-size: 30px;
+}
+
+.tab-button {
+    position: relative;
+
+    padding: 8px 12px;
+    border: 0;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+    font-weight: 700;
+    transition: color var(--transition-fast);
+}
+
+.tab-button::after {
+    content: "";
+
+    position: absolute;
+    right: 12px;
+    bottom: -13px;
+    left: 12px;
+
+    height: 2px;
+
+    background: transparent;
+    transition: background var(--transition-slow);
+}
+
+.tab-button:hover {
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+.tab-button[aria-selected="true"] {
+    color: var(--accent-color);
+}
+
+.tab-button[aria-selected="true"]::after {
+    background: var(--accent-color);
+}
+
+.tab-panel {
+    width: 100%;
+    min-width: 0;
+}
+
+.tab-panel[hidden] {
+    display: none;
+}
+
+@media (max-width: 520px) {
+    .tab-navigation {
+        overflow-x: auto;
+    }
+}

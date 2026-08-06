@@ -1,0 +1,92 @@
+/* =========================================================
+   Page layout
+========================================================= */
+
+.site-layout {
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+        var(--sidebar-width)
+        var(--content-width);
+    gap: var(--column-gap);
+
+    width: calc(
+        var(--sidebar-width) +
+        var(--column-gap) +
+        var(--content-width)
+    );
+    max-width: calc(100% - 48px);
+
+    margin: 0 auto;
+    padding: 64px 0;
+}
+
+/* Vertical divider between the profile and main columns. */
+.site-layout::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--sidebar-width) + 24px - 170px);
+
+    width: 1px;
+    background-color: var(--divider-soft);
+
+    pointer-events: none;
+}
+
+.main-content {
+    width: var(--content-width);
+    min-width: 0;
+}
+
+/* Medium desktop: keep the sidebar fixed and let content shrink. */
+@media (max-width: 1168px) and (min-width: 821px) {
+    .site-layout {
+        grid-template-columns:
+            var(--sidebar-width)
+            minmax(0, 1fr);
+
+        width: calc(100% - 48px);
+    }
+
+    .main-content {
+        width: auto;
+    }
+}
+
+/* Tablet and mobile: switch to one column. */
+@media (max-width: 820px) {
+    .site-layout {
+        grid-template-columns: 1fr;
+        gap: 36px;
+
+        width: min(
+            calc(100% - 32px),
+            720px
+        );
+
+        padding: 36px 0;
+    }
+
+    .site-layout::before {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .site-layout {
+        width: min(
+            calc(100% - 24px),
+            720px
+        );
+
+        padding: 24px 0;
+    }
+}

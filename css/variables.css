@@ -1,0 +1,34 @@
+/* =========================================================
+   Global design tokens
+========================================================= */
+
+:root {
+    --page-background: #f5f4f0;
+    --surface-background: #ffffff;
+
+    --text-primary: #202020;
+    --text-secondary: #676767;
+    --text-light: #8a8a8a;
+
+    --accent-color: #8c2f39;
+    --accent-hover: #641f28;
+
+    --border-color: #deddd8;
+    --timeline-color: #c9c6bd;
+    --divider-soft: #c9c8c3;
+    --divider-strong: #444441;
+
+    /* The later values in the original stylesheet take precedence. */
+    --sidebar-width: 200px;
+    --content-width: 872px;
+    --column-gap: 48px;
+    --page-width: 1120px;
+
+    --border-radius-small: 6px;
+    --border-radius-medium: 12px;
+
+    --shadow-soft:
+        0 10px 35px rgb(0 0 0 / 6%);
+
+    --transition-fast: 160ms ease;
+}
