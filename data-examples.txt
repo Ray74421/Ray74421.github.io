@@ -1,0 +1,34 @@
+READING EXAMPLE
+---------------
+{
+    date: "August 2026",
+    title: "Quantum Information Theory",
+    description:
+        "Reading introductory materials on quantum channels, entanglement, and quantum measurements.",
+    url: "https://replace-this-with-the-book-page.example",
+    linkText: "details"
+}
+
+TRIP EXAMPLE
+------------
+{
+    date: "Summer 2026",
+    title: "Netherlands",
+    description:
+        "Visited several cities and explored local architecture and culture.",
+    images: [
+        {
+            src: "./images/trips/netherlands/01.jpg",
+            alt: "Canal houses in Amsterdam",
+            caption: "Amsterdam, summer 2026"
+        },
+        {
+            src: "./images/trips/netherlands/02.jpg",
+            alt: "A canal bridge in Amsterdam"
+        },
+        {
+            src: "./images/trips/netherlands/03.jpg",
+            alt: "Street view in Utrecht"
+        }
+    ]
+}
