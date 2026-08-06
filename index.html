@@ -17,7 +17,7 @@
 
     <link
         rel="stylesheet"
-        href="./css/styles.css"
+        href="./css/styles.css?v=20260806-2"
     >
 </head>
 
@@ -514,10 +514,6 @@
             {
                 src: "./images/rzsava.png",
                 alt: "Historic building in Delft"
-            },
-                     {
-                src: "./images/rzsava.png",
-                alt: "Historic building in Delfttest"
             }
         ]
 
@@ -1061,9 +1057,21 @@ function createTripGallery(entry) {
         `${entry.title ?? "Trip"} photo gallery`
     );
 
+    /*
+     * The viewport owns horizontal scrolling.
+     * The inner track only arranges images in one row.
+     */
+    const viewport = document.createElement("div");
+    viewport.className = "trip-gallery-viewport";
+    viewport.id = `trip-gallery-viewport-${tripGallerySequence}`;
+    viewport.tabIndex = 0;
+    viewport.setAttribute(
+        "aria-label",
+        `${entry.title ?? "Trip"} photos`
+    );
+
     const track = document.createElement("div");
     track.className = "trip-gallery-track";
-    track.id = `trip-gallery-track-${tripGallerySequence}`;
 
     const fragment = document.createDocumentFragment();
 
@@ -1097,7 +1105,8 @@ function createTripGallery(entry) {
     });
 
     track.append(fragment);
-    gallery.append(track);
+    viewport.append(track);
+    gallery.append(viewport);
 
     if (images.length > 1) {
         const toggleButton = document.createElement("button");
@@ -1105,7 +1114,7 @@ function createTripGallery(entry) {
         toggleButton.className = "trip-gallery-toggle";
         toggleButton.textContent = "expand";
         toggleButton.setAttribute("aria-expanded", "false");
-        toggleButton.setAttribute("aria-controls", track.id);
+        toggleButton.setAttribute("aria-controls", viewport.id);
 
         toggleButton.addEventListener("click", () => {
             const isExpanded =
@@ -1120,7 +1129,7 @@ function createTripGallery(entry) {
                 isExpanded ? "collapse" : "expand";
 
             if (!isExpanded) {
-                track.scrollLeft = 0;
+                viewport.scrollLeft = 0;
             }
         });
 
