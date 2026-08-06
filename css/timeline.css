@@ -7,6 +7,9 @@
     display: grid;
     gap: 16px;
 
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     margin-top: 26px;
     padding-left: 32px;
 }
@@ -26,6 +29,9 @@
 .timeline-item {
     position: relative;
 
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     margin: 0;
     padding: 18px 20px;
 
@@ -193,6 +199,9 @@
 }
 
 .timeline-category-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 160px;
 }
 
@@ -414,13 +423,21 @@
 ========================================================= */
 
 .trip-gallery {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     margin-top: 16px;
+    overflow: hidden;
 }
 
 .trip-gallery-track {
     display: flex;
     gap: 12px;
+
+    width: 100%;
+    min-width: 0;
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 .trip-gallery:not(.is-expanded) .trip-gallery-track {
@@ -476,6 +493,7 @@
 .trip-gallery.is-expanded .trip-gallery-track {
     overflow-x: auto;
     overflow-y: hidden;
+    max-width: 100%;
 
     padding: 2px 2px 12px;
 
