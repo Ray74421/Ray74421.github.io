@@ -422,26 +422,50 @@
    Trip image gallery
 ========================================================= */
 
+/* Allow every Timeline ancestor to shrink instead of widening the page. */
+#timeline-panel,
+#timeline-section,
+.timeline-category-panel,
+.timeline,
+.timeline-item {
+    min-width: 0;
+    max-width: 100%;
+}
+
 .trip-gallery {
     width: 100%;
     min-width: 0;
     max-width: 100%;
     margin-top: 16px;
+
     overflow: hidden;
+    contain: inline-size;
 }
 
-.trip-gallery-track {
-    display: flex;
-    gap: 12px;
+/* This dedicated viewport owns the horizontal scrollbar. */
+.trip-gallery-viewport {
+    display: block;
 
     width: 100%;
     min-width: 0;
     max-width: 100%;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+
     box-sizing: border-box;
+    overscroll-behavior-inline: contain;
 }
 
-.trip-gallery:not(.is-expanded) .trip-gallery-track {
-    overflow: hidden;
+/* The inner track may be wider than its viewport. */
+.trip-gallery-track {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
 }
 
 .trip-gallery:not(.is-expanded)
@@ -451,8 +475,9 @@
 
 .trip-gallery-image-button {
     display: block;
-    flex: 0 0 min(440px, 100%);
+    flex: 0 0 auto;
 
+    width: min(300px, 82vw);
     min-width: 0;
     padding: 0;
 
@@ -471,6 +496,12 @@
         box-shadow var(--transition-fast);
 }
 
+.trip-gallery:not(.is-expanded)
+.trip-gallery-image-button:first-child {
+    width: min(440px, 100%);
+    max-width: 100%;
+}
+
 .trip-gallery-image-button:hover,
 .trip-gallery-image-button:focus-visible {
     border-color: var(--accent-color);
@@ -478,7 +509,8 @@
     box-shadow: 0 10px 24px rgb(0 0 0 / 10%);
 }
 
-.trip-gallery-image-button:focus-visible {
+.trip-gallery-image-button:focus-visible,
+.trip-gallery-viewport:focus-visible {
     outline: 3px solid rgb(140 47 57 / 20%);
     outline-offset: 3px;
 }
@@ -490,21 +522,33 @@
     object-fit: cover;
 }
 
-.trip-gallery.is-expanded .trip-gallery-track {
+.trip-gallery.is-expanded .trip-gallery-viewport {
     overflow-x: auto;
     overflow-y: hidden;
-    max-width: 100%;
 
     padding: 2px 2px 12px;
 
     scroll-behavior: smooth;
     scroll-snap-type: x proximity;
     scrollbar-gutter: stable;
-    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
 }
 
-.trip-gallery.is-expanded .trip-gallery-image-button {
-    flex-basis: min(300px, 82vw);
+.trip-gallery.is-expanded
+.trip-gallery-viewport::-webkit-scrollbar {
+    height: 10px;
+}
+
+.trip-gallery.is-expanded
+.trip-gallery-viewport::-webkit-scrollbar-track {
+    background: rgb(0 0 0 / 6%);
+    border-radius: 999px;
+}
+
+.trip-gallery.is-expanded
+.trip-gallery-viewport::-webkit-scrollbar-thumb {
+    background: rgb(0 0 0 / 28%);
+    border-radius: 999px;
 }
 
 .trip-gallery-toggle {
@@ -540,7 +584,7 @@
 
 .trip-gallery-toggle:focus-visible {
     outline: 3px solid rgb(140 47 57 / 20%);
-    outline-offset: 3px;
+    outline-offset: 2px;
 }
 
 /* =========================================================
