@@ -1,1 +1,197 @@
 
+        /* ================================
+           3. 页面整体布局
+        ================================= */
+
+        .site-layout {
+            display: grid;
+            grid-template-columns:
+                var(--sidebar-width)
+                minmax(0, 1fr);
+            gap: 48px;
+
+            width: min(
+                calc(100% - 48px),
+                var(--page-width)
+            );
+
+            margin: 0 auto;
+            padding: 64px 0;
+        }
+
+        /* ================================
+           4. 左侧个人信息栏
+        ================================= */
+
+        .profile-sidebar {
+            align-self: start;
+            position: sticky;
+            top: 40px;
+
+            width: var(--sidebar-width);
+            min-width: 0;
+
+            transform: translateX(-200px);/*左右挪动个人信息*/
+        }
+
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 24px;
+
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+
+            object-fit: cover;
+            background: #e8e7e2;
+        }
+
+        .profile-name {
+            margin-bottom: 6px;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .profile-title {
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .profile-affiliation {
+            margin-bottom: 22px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .profile-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .profile-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 36px;
+            padding: 6px 12px;
+
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+
+            background: var(--surface-background);
+            color: var(--text-primary);
+
+            font-size: 0.88rem;
+            transition:
+                border-color var(--transition-fast),
+                color var(--transition-fast),
+                transform var(--transition-fast);
+        }
+
+        .profile-link:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* ================================
+           5. 右侧主内容区域
+        ================================= */
+
+        .main-content {
+            min-width: 0;
+            
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+
+            border-bottom: 1px solid var(--border-color);
+            font-size: 30px;
+        }
+
+        .tab-button {
+            position: relative;
+
+            padding: 8px 12px;
+            border: 0;
+
+            background: transparent;
+            color: var(--text-secondary);
+
+            cursor: pointer;
+            font-weight: 700;
+            transition: color var(--transition-fast);
+            
+        }
+
+        .tab-button::after {
+            content: "";
+
+            position: absolute;
+            right: 12px;
+            bottom: -13px;
+            left: 12px;
+
+            height: 2px;
+            
+            background: transparent;
+            transition: background var(--transition-slow);
+        }
+
+        .tab-button:hover {
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        .tab-button[aria-selected="true"] {
+            color: var(--accent-color);
+        }
+
+        .tab-button[aria-selected="true"]::after {
+            background: var(--accent-color);
+        }
+
+        .tab-panel[hidden] {
+            display: none;
+        }
+
+        .content-section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .introduction {
+            max-width: 720px;
+            font-size: 1.03rem;
+        }
+
+        .research-list {
+            display: grid;
+            gap: 10px;
+
+            margin: 0;
+            padding-left: 20px;
+        }
