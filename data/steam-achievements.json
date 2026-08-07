@@ -1,8 +1,52 @@
 {
-  "generatedAt": "2026-08-07T05:01:33.127Z",
+  "generatedAt": "2026-08-07T14:53:35.248Z",
   "steamId": "76561199073962306",
-  "entryCount": 490,
+  "entryCount": 494,
   "entries": [
+    {
+      "unlockedAt": "2026-08-07T14:40:06.000Z",
+      "date": "Aug 7, 2026, 22:40",
+      "title": "Bromance",
+      "description": "Sid Meier's Civilization VI — Achieve the maximum Alliance level with Gilgamesh",
+      "url": "https://store.steampowered.com/app/289070/",
+      "linkText": "View game",
+      "appId": 289070,
+      "gameName": "Sid Meier's Civilization VI",
+      "achievementApiName": "RAF_ACHIEVEMENT_25"
+    },
+    {
+      "unlockedAt": "2026-08-07T14:35:17.000Z",
+      "date": "Aug 7, 2026, 22:35",
+      "title": "Splitting the Atom",
+      "description": "Sid Meier's Civilization VI — Win a regular game with an Atomic Era start",
+      "url": "https://store.steampowered.com/app/289070/",
+      "linkText": "View game",
+      "appId": 289070,
+      "gameName": "Sid Meier's Civilization VI",
+      "achievementApiName": "NEW_ACHIEVEMENT_5_2"
+    },
+    {
+      "unlockedAt": "2026-08-07T14:34:44.000Z",
+      "date": "Aug 7, 2026, 22:34",
+      "title": "Airing Your Grievances",
+      "description": "Sid Meier's Civilization VI — Win a Diplomatic Victory Resolution and use it to reduce another player's progress toward that victory",
+      "url": "https://store.steampowered.com/app/289070/",
+      "linkText": "View game",
+      "appId": 289070,
+      "gameName": "Sid Meier's Civilization VI",
+      "achievementApiName": "VSV_ACHIEVEMENT_21"
+    },
+    {
+      "unlockedAt": "2026-08-07T14:31:05.000Z",
+      "date": "Aug 7, 2026, 22:31",
+      "title": "Epic of Gilgamesh",
+      "description": "Sid Meier's Civilization VI — As Sumeria, have the first Great Work of Writing",
+      "url": "https://store.steampowered.com/app/289070/",
+      "linkText": "View game",
+      "appId": 289070,
+      "gameName": "Sid Meier's Civilization VI",
+      "achievementApiName": "NEW_ACHIEVEMENT_3_22"
+    },
     {
       "unlockedAt": "2026-08-05T10:02:33.000Z",
       "date": "Aug 5, 2026, 18:02",
