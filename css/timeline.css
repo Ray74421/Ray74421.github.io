@@ -460,12 +460,11 @@
 /* The inner track may be wider than its viewport. */
 .trip-gallery-track {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: 12px;
 
     width: max-content;
     min-width: 100%;
-    max-width: none;
 }
 
 .trip-gallery:not(.is-expanded)
@@ -474,26 +473,25 @@
 }
 
 .trip-gallery-image-button {
-    display: block;
+    display: inline-block;
     flex: 0 0 auto;
 
-    width: min(300px, 82vw);
-    min-width: 0;
+    width: auto;
+    height: auto;
     padding: 0;
+    margin: 0;
 
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border: 0;
+    border-radius: 0;
 
-    overflow: hidden;
-    background: var(--surface-background);
+    background: transparent;
+    appearance: none;
 
-    cursor: zoom-in;
-    scroll-snap-align: start;
+    font-size: 0;
+    line-height: 0;
 
-    transition:
-        border-color var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
+    vertical-align: top;
+    cursor: pointer;
 }
 
 .trip-gallery:not(.is-expanded)
@@ -502,24 +500,46 @@
     max-width: 100%;
 }
 
-.trip-gallery-image-button:hover,
-.trip-gallery-image-button:focus-visible {
-    border-color: var(--accent-color);
+.trip-gallery-image-button:hover
+.trip-gallery-image {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgb(0 0 0 / 10%);
+
+    box-shadow:
+        0 6px 16px
+        rgba(0, 0, 0, 0.18);
+}
+.trip-gallery-image-button:focus {
+    outline: none;
 }
 
-.trip-gallery-image-button:focus-visible,
-.trip-gallery-viewport:focus-visible {
-    outline: 3px solid rgb(140 47 57 / 20%);
+.trip-gallery-image-button:focus-visible
+.trip-gallery-image {
+    outline: 2px solid currentColor;
     outline-offset: 3px;
+
+    box-shadow:
+        0 6px 16px
+        rgba(0, 0, 0, 0.18);
 }
+
+
 
 .trip-gallery-image {
     display: block;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+
+    width: auto;
+    max-width: none;
+    height: clamp(160px, 22vw, 220px);
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        opacity 160ms ease;
 }
 
 .trip-gallery.is-expanded .trip-gallery-viewport {
